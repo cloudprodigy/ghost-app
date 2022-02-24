@@ -1,5 +1,5 @@
 /**
- * #Deployment Setup
+ * # Deployment Setup
  * The Terraform code deploys following:   <br>
  * a. VPC with 2 public subnets with IGW attached and routing setup <br>
  * b. EC2 instance pre-installed with Ghost base app and it's dependencies <br>
