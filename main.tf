@@ -1,11 +1,12 @@
 /**
- * # 1. Deployment Setup
- * The Terraform code deploys following:
+ * #Deployment Setup
+ * The Terraform code deploys following:   <br>
  * a. VPC with 2 public subnets with IGW attached and routing setup <br>
  * b. EC2 instance pre-installed with Ghost base app and it's dependencies <br>
  * c. Cron setup for backup of app and database every night <br>
  * d. Secrets Manager to generate and store DB Root user credentials <br>
- * e. Create OS user called `ghost-admin` and attaches the SSH public key provided <br>
+ * e. Create OS user called `ghost-admin` and attaches the provided SSH public key <br>
+ * f. Deploy CodePipeline with CodeDeploy to deploy app on the EC2 instance <br>
  * ## Terraform Setup 
  * a. Download Terraform CLI v1.0 or above <br>
  * b. Generate an SSH Key pair and save the public key under `ssh_public_keys` folder <br>
@@ -29,7 +30,7 @@
  * c. Setup ACM to enable encryption in transit  <br>
  * ### Backup and Notification (for EC2 based deployments)
  * a. Create SSM document to run scripts on EC2 instance to take backups  <br>
- * b. Create Lambda function to call SSM documents and sends notification on failure or success  <br>
+ * b. Create Lambda function to call SSM documents and sends notification on failure or success using SNS  <br>
  * c. Create CloudWatch scheduled event to call Lambda function periodically  <br>
  * <i> Above setup takes out the crontab and smtp setup on EC2 instance and make it more serverless</i>  <br>
  * ### OS User and SSH key setup (for EC2 based deployment) 

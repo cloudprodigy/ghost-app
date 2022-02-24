@@ -11,7 +11,7 @@ module "vpc" {
   single_nat_gateway        = false
   map_public_ip_on_launch   = true
 
-  name = "${local.parent_project}-${local.app_name}-${local.environment}"
+  name = "${local.project_name}-${local.app_name}-${local.environment}"
 
   cidr = "172.32.0.0/16"
   azs  = ["${local.region}a", "${local.region}b"]

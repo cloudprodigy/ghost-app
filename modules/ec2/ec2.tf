@@ -23,13 +23,11 @@ resource "aws_instance" "default" {
   user_data = templatefile("${path.module}/user_data.sh", {
     "root_password"  = jsondecode(aws_secretsmanager_secret_version.dbroot_ver.secret_string)["password"],
     "ssh_public_key" = var.ssh_public_key,
-    "db_user"        = var.db_username,
-    "user_password"  = jsondecode(aws_secretsmanager_secret_version.dbuser_ver.secret_string)["password"],
     "db_name"        = var.db_name
 
   })
 
-  depends_on = [aws_secretsmanager_secret_version.dbroot_ver, aws_secretsmanager_secret_version.dbuser_ver]
+  depends_on = [aws_secretsmanager_secret_version.dbroot_ver]
 
   tags = merge(local.common_tags,
     {
@@ -66,13 +64,11 @@ resource "aws_iam_instance_profile" "ec2" {
 resource "aws_iam_role" "ec2" {
   name               = "app_server_role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role_policy_document.json
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  ]
 }
-
-resource "aws_iam_role_policy_attachment" "ssm" {
-  role       = aws_iam_role.ec2.id
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
 data "aws_iam_policy_document" "ec2_assume_role_policy_document" {
   statement {
     actions = ["sts:AssumeRole"]

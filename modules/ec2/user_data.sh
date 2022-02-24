@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y mysql-server nginx sendmail
+sudo apt-get install -y mysql-server nginx sendmail ruby-full
 sudo useradd ghost-admin -s /bin/bash && sudo mkdir -p /home/ghost-admin/.ssh
 sudo touch /home/ghost-admin/.ssh/authorized_keys
 sudo echo "${ssh_public_key}" > /home/ghost-admin/.ssh/authorized_keys
@@ -30,8 +30,6 @@ sudo -u ubuntu ghost install \
     --no-prompt \
     --start
 
-sudo chown -R ghost-admin:ghost-admin /var/www/ghost
-
 #Cron
 sudo mkdir /backup
 sudo crontab<<EOF
@@ -39,3 +37,8 @@ MAILTO=balkaran.brar@gmail.com
 0 0 * * * mysqldump -u root -p$root_password --all-databases > /backup/db_backup.sql
 0 0 * * * tar czf /backup/app_backup.tgz /var/www/ghost 
 EOF
+
+#setup codedeploy agent
+wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install
+chmod +x ./install
+sudo ./install auto > /tmp/logfile

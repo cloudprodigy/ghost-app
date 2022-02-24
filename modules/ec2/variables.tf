@@ -27,11 +27,6 @@ variable "app_name" {
 
 }
 
-variable "db_username" {
-  description = "Application DB user"
-  type        = string
-}
-
 variable "db_name" {
   description = "Database name"
   type        = string
