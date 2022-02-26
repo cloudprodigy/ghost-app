@@ -35,7 +35,7 @@ sudo mkdir /backup
 sudo crontab<<EOF
 MAILTO=balkaran.brar@gmail.com
 0 0 * * * mysqldump -u root -p$root_password --all-databases > /backup/db_backup.sql
-0 0 * * * tar czf /backup/app_backup.tgz /var/www/ghost 
+0 0 * * * tar -czf /backup/app_backup.tgz /var/www/ghost 
 EOF
 
 #setup codedeploy agent
